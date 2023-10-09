@@ -1,0 +1,15 @@
+sibc/__pycache__/*
+sibc/csidh/__pycache__/*
+sibc/bsidh/__pycache__/*
+sibc/sidh/__pycache__/*
+sibc/montgomery/__pycache__/*
+test/__pycache__/*
+build/
+dist/
+sibc.egg-info/
+*.swp
+sibc-installed.txt
+deb_dist/*
+sibc-*.*.*.tar.gz
+.idea
+.chglog
