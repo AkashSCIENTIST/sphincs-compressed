@@ -155,18 +155,24 @@ def base_w(x, w, out_len):
     return basew
 
 
-def sig_wots_from_sig_xmss(sig):
-    return sig[0:len_1]
+def sig_wots_from_sig_xmss(sig, is_counter = False):
+    if is_counter:
+        return sig[1:len_1+1], sig[0]
+    else:
+        return sig[0:len_1], 0
 
 
-def auth_from_sig_xmss(sig):
-    return sig[len_1:]
+def auth_from_sig_xmss(sig, is_counter = False):
+    if is_counter:
+        return sig[len_1+1:]
+    else:
+        return sig[len_1:]
 
 
 def sigs_xmss_from_sig_ht(sig):
     sigs = []
     for i in range(0, d):
-        sigs.append(sig[i*(h_prime + len_1):(i+1)*(h_prime + len_1)])
+        sigs.append(sig[i*(h_prime + len_1):(i+1)*(h_prime + len_1 + 1)])
 
     return sigs
 
@@ -182,11 +188,11 @@ def auths_from_sig_fors(sig):
 
 
 def bytes_to_int(byte_data):
-    return int.from_bytes(byte_data, 'big', signed=True)
+    return int.from_bytes(byte_data, 'big', signed=False)
 
 
 def int_to_bytes(n):
-    return n.to_bytes((n.bit_length() + 7) // 8, 'big', signed=True)
+    return n.to_bytes((n.bit_length() + 7) // 8, 'big', signed=False)
 
 def flatten(input_list):
     return [item for sublist in input_list for item in (flatten(sublist) if isinstance(sublist, list) else [sublist])]
