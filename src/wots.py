@@ -64,7 +64,9 @@ def wots_sign(m, secret_seed, public_seed, adrs:ADRS, is_counter = False):
         print("Counter gen", counter)
         msg = prepare_msg(m, public_seed, counter)
     else:
-        m = hash(public_seed, ADRS(), m) + hash2(public_seed, ADRS(), m)
+        counter = generate_counter(m, public_seed)
+        m = hash(public_seed, ADRS(), m, counter) + \
+            hash2(public_seed, ADRS(), m, counter)
         msg = base_w(m, w, len_1)
 
     
@@ -86,7 +88,9 @@ def wots_pk_from_sig(sig, m, public_seed, adrs: ADRS, counter = 0, is_counter = 
         print("Counter gen", counter)
         msg = prepare_msg(m, public_seed, counter)
     else:
-        m = hash(public_seed, ADRS(), m) + hash2(public_seed, ADRS(), m)
+        counter = generate_counter(m, public_seed)
+        m = hash(public_seed, ADRS(), m, counter) + \
+            hash2(public_seed, ADRS(), m, counter)
         msg = base_w(m, w, len_1)
 
     tmp = bytes()

@@ -11,7 +11,7 @@ import random
 import ctypes
 import skein
 
-def hash(seed, adrs: ADRS, value, digest_size=n):
+def hash(seed, adrs: ADRS, value, counter = None, digest_size=n):
     m = hashlib.sha512()
     # m = hashlib.blake2b()
     # m = skein.skein512()
@@ -22,13 +22,16 @@ def hash(seed, adrs: ADRS, value, digest_size=n):
     else:
         m.update(adrs)
     m.update(value)
+
+    if counter is not None:
+        m.update(int_to_bytes(counter))
 
     hashed = m.digest()[:digest_size]
 
     return hashed
 
 
-def hash2(seed, adrs: ADRS, value, digest_size=n):
+def hash2(seed, adrs: ADRS, value, counter = None, digest_size=n):
     m = hashlib.sha512()
     # m = hashlib.blake2b()
     # m = skein.skein512()
@@ -40,6 +43,9 @@ def hash2(seed, adrs: ADRS, value, digest_size=n):
     else:
         m.update(adrs)
     m.update(value)
+
+    if counter is not None:
+        m.update(int_to_bytes(counter))
 
     hashed = m.digest()[:digest_size]
 
