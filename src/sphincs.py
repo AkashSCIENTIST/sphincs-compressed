@@ -107,6 +107,7 @@ def spx_sign(m, secret_key):
 # Output: Boolean
 def spx_verify(m, sig, public_key):
     adrs = ADRS()
+    print(sum([len(i) for i in flatten(sig)]), "Bytes")
     r = sig[0]
     sig_fors = sig[1]
     sig_ht = sig[2]
