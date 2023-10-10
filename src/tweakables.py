@@ -9,9 +9,30 @@ import math
 import hashlib
 import random
 import ctypes
+import skein
 
 def hash(seed, adrs: ADRS, value, digest_size=n):
-    m = hashlib.sha256()
+    m = hashlib.sha512()
+    # m = hashlib.blake2b()
+    # m = skein.skein512()
+
+    m.update(seed)
+    if type(adrs) == ADRS:
+        m.update(adrs.to_bin())
+    else:
+        m.update(adrs)
+    m.update(value)
+
+    hashed = m.digest()[:digest_size]
+
+    return hashed
+
+
+def hash2(seed, adrs: ADRS, value, digest_size=n):
+    m = hashlib.sha512()
+    # m = hashlib.blake2b()
+    # m = skein.skein512()
+
 
     m.update(seed)
     if type(adrs) == ADRS:
