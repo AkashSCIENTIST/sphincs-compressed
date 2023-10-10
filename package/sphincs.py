@@ -151,7 +151,7 @@ class Sphincs():
         for i in sig_tab[2]:  # SIG Hypertree
             sig += i
         sig += sig_tab[3]
-        print(len(sig))
+        # print(len(sig))
         return sig
 
     def verify(self, m, sig, pk):
