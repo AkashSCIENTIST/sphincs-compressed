@@ -14,7 +14,10 @@ def hash(seed, adrs: ADRS, value, digest_size=n):
     m = hashlib.sha256()
 
     m.update(seed)
-    m.update(adrs.to_bin())
+    if type(adrs) == ADRS:
+        m.update(adrs.to_bin())
+    else:
+        m.update(adrs)
     m.update(value)
 
     hashed = m.digest()[:digest_size]
@@ -176,3 +179,14 @@ def auths_from_sig_fors(sig):
         sigs[i].append(sig[((a+1) * i + 1):((a+1) * (i+1))])
 
     return sigs
+
+
+def bytes_to_int(byte_data):
+    return int.from_bytes(byte_data, 'big', signed=True)
+
+
+def int_to_bytes(n):
+    return n.to_bytes((n.bit_length() + 7) // 8, 'big', signed=True)
+
+def flatten(input_list):
+    return [item for sublist in input_list for item in (flatten(sublist) if isinstance(sublist, list) else [sublist])]

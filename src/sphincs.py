@@ -86,7 +86,7 @@ def spx_sign(m, secret_key):
 
     pk_fors = fors_pk_from_sig(sig_fors, md, public_seed, adrs.copy())
     print("sign fors")
-    print(pk_fors)
+    # print(pk_fors)
 
     adrs.set_type(ADRS.TREE)
     sig_ht = ht_sign(pk_fors, secret_seed, public_seed, idx_tree, idx_leaf)
@@ -95,7 +95,7 @@ def spx_sign(m, secret_key):
     # sig_ht = sig_ht[4:]
 
     sig += [sig_ht]
-    print(sig_ht)
+    # print(sig_ht)
     # save at last to not disturb other indexes, as 
     # other places use indexes to access specific elements
     save_fors_counter(counter, sig)
@@ -150,11 +150,11 @@ def spx_verify(m, sig, public_key):
 
     pk_fors = fors_pk_from_sig(sig_fors, md, public_seed, adrs)
     print("verify fors")
-    print(pk_fors)
+    # print(pk_fors)
 
     adrs.set_type(ADRS.TREE)
     print("verify sig_ht")
 
     # sig_ht = sig_ht[:len(sig_ht) - 4]
-    print(sig_ht)
+    # print(sig_ht)
     return ht_verify(pk_fors, sig_ht, public_seed, idx_tree, idx_leaf, public_root)

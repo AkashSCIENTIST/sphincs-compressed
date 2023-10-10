@@ -8,6 +8,7 @@ from src.adrs import *
 from src.wots import *
 import math
 
+
 # Input: Secret seed SK.seed, start index s, target node height z, public seed PK.seed, address ADRS
 # Output: n-byte root node - top node on Stack
 def treehash(secret_seed, s, z, public_seed, adrs: ADRS):
@@ -62,7 +63,7 @@ def xmss_sign(m, secret_seed, idx, public_seed, adrs):
     adrs.set_type(ADRS.WOTS_HASH)
     adrs.set_key_pair_address(idx)
 
-    sig = wots_sign(m, secret_seed, public_seed, adrs.copy())
+    sig, counter = wots_sign(m, secret_seed, public_seed, adrs.copy())
     sig_xmss = sig + auth
     return sig_xmss
 
