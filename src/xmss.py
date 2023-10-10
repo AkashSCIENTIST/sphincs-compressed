@@ -8,7 +8,7 @@ from src.adrs import *
 from src.wots import *
 import math
 
-is_counter = not False
+is_counter = False
 
 # Input: Secret seed SK.seed, start index s, target node height z, public seed PK.seed, address ADRS
 # Output: n-byte root node - top node on Stack
