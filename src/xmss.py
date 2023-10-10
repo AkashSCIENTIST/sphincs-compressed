@@ -8,7 +8,7 @@ from src.adrs import *
 from src.wots import *
 import math
 
-is_counter = False
+is_counter = not False
 
 # Input: Secret seed SK.seed, start index s, target node height z, public seed PK.seed, address ADRS
 # Output: n-byte root node - top node on Stack
@@ -63,6 +63,7 @@ def xmss_sign(m, secret_seed, idx, public_seed, adrs):
 
     adrs.set_type(ADRS.WOTS_HASH)
     adrs.set_key_pair_address(idx)
+    print("Auth len sign", len(auth))
 
     sig, counter = wots_sign(m, secret_seed, public_seed, adrs.copy(), is_counter)
     if is_counter:
@@ -79,6 +80,7 @@ def xmss_pk_from_sig(idx, sig_xmss, m, public_seed, adrs):
     adrs.set_key_pair_address(idx)
     sig, counter = sig_wots_from_sig_xmss(sig_xmss, is_counter)
     auth = auth_from_sig_xmss(sig_xmss, is_counter)
+    print("Auth len verify", len(auth))
 
     node_0 = wots_pk_from_sig(sig, m, public_seed, adrs.copy(), counter, is_counter)
     node_1 = 0

@@ -193,7 +193,7 @@ def auth_from_sig_xmss(sig, is_counter = False):
 def sigs_xmss_from_sig_ht(sig):
     sigs = []
     for i in range(0, d):
-        sigs.append(sig[i*(h_prime + len_1):(i+1)*(h_prime + len_1 + 1)])
+        sigs.append(sig[i*(h_prime + len_1):(i+1)*(h_prime + len_1)])
 
     return sigs
 
