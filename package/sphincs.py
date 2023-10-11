@@ -184,6 +184,7 @@ class Sphincs():
             sig_tab[2].append(sig[i:(i + n)])
         sig_tab += [[sig[-4:]]]
 
+        # print(sig_tab, pk_tab)
         return spx_verify(m, sig_tab, pk_tab)
 
     # SETTERS / GETTERS

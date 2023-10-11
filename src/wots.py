@@ -61,10 +61,11 @@ def wots_sign(m, secret_seed, public_seed, adrs:ADRS, is_counter = False):
     counter = 0
     if is_counter:
         counter = generate_counter(m, public_seed)
-        print("Counter gen", counter)
+        # print("Counter gen", counter)
         msg = prepare_msg(m, public_seed, counter)
     else:
         counter = generate_counter(m, public_seed)
+        # print("Counter gen", counter)
         # m = hash(public_seed, ADRS(), m, counter) + \
         #     hash2(public_seed, ADRS(), m, counter)
         # msg = base_w(m, w, len_1)
@@ -86,10 +87,11 @@ def wots_pk_from_sig(sig, m, public_seed, adrs: ADRS, counter = 0, is_counter = 
     wots_pk_adrs = adrs.copy()
     if is_counter:
         counter = generate_counter(m, public_seed)
-        print("Counter gen", counter)
+        # print("Counter verify", counter)
         msg = prepare_msg(m, public_seed, counter)
     else:
         counter = generate_counter(m, public_seed)
+        # print("Counter verify", counter)
         # m = hash(public_seed, ADRS(), m, counter) + \
         #     hash2(public_seed, ADRS(), m, counter)
         # msg = base_w(m, w, len_1)
