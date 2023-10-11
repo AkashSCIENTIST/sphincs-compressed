@@ -85,12 +85,12 @@ def spx_sign(m, secret_key):
     sig += [sig_fors]
 
     pk_fors = fors_pk_from_sig(sig_fors, md, public_seed, adrs.copy())
-    print("sign fors")
+    # print("sign fors")
     # print(pk_fors)
 
     adrs.set_type(ADRS.TREE)
     sig_ht = ht_sign(pk_fors, secret_seed, public_seed, idx_tree, idx_leaf)
-    print("sign sig_ht")
+    # print("sign sig_ht")
     # print(sig_ht)
     # sig_ht = sig_ht[4:]
 
@@ -107,7 +107,7 @@ def spx_sign(m, secret_key):
 # Output: Boolean
 def spx_verify(m, sig, public_key):
     adrs = ADRS()
-    print(sum([len(i) for i in flatten(sig)]), "Bytes")
+    # print(sum([len(i) for i in flatten(sig)]), "Bytes")
     r = sig[0]
     sig_fors = sig[1]
     sig_ht = sig[2]
@@ -150,11 +150,11 @@ def spx_verify(m, sig, public_key):
     adrs.set_key_pair_address(idx_leaf)
 
     pk_fors = fors_pk_from_sig(sig_fors, md, public_seed, adrs)
-    print("verify fors")
+    # print("verify fors")
     # print(pk_fors)
 
     adrs.set_type(ADRS.TREE)
-    print("verify sig_ht")
+    # print("verify sig_ht")
 
     # sig_ht = sig_ht[:len(sig_ht) - 4]
     # print(sig_ht)

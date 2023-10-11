@@ -94,7 +94,10 @@ def fors_sign(m, secret_seed, public_seed, adrs):
 # Input: FORS signature SIG_FORS, (k lg t)-bit string M, public seed PK.seed, address ADRS
 # Output: FORS public key
 def fors_pk_from_sig(sig_fors, m, public_seed, adrs: ADRS):
-    m_int = int.from_bytes(m, 'big')
+    if type(m) != int:
+        m_int = int.from_bytes(m, 'big')
+    else:
+        m_int = m
 
     sigs = auths_from_sig_fors(sig_fors)
     root = bytes()
