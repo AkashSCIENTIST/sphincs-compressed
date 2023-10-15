@@ -29,7 +29,7 @@ def chain(x, i, s, public_seed, adrs: ADRS):
 # Output: WOTS+ private key sk
 def wots_sk_gen(secret_seed, adrs: ADRS):  # Not necessary
     sk = []
-    for i in range(0, len_1):
+    for i in range(0, len_x):
         adrs.set_chain_address(i)
         adrs.set_hash_address(0)
         sk.append(prf(secret_seed, adrs.copy()))
@@ -41,7 +41,7 @@ def wots_sk_gen(secret_seed, adrs: ADRS):  # Not necessary
 def wots_pk_gen(secret_seed, public_seed, adrs: ADRS):
     wots_pk_adrs = adrs.copy()
     tmp = bytes()
-    for i in range(0, len_1):
+    for i in range(0, len_x):
         adrs.set_chain_address(i)
         adrs.set_hash_address(0)
         sk = prf(secret_seed, adrs.copy())
@@ -56,15 +56,14 @@ def wots_pk_gen(secret_seed, public_seed, adrs: ADRS):
 
 # Input: Message M, secret seed SK.seed, public seed PK.seed, address ADRS
 # Output: WOTS+ signature sig
-def wots_sign(m, secret_seed, public_seed, adrs:ADRS):
-    
+def wots_sign(m, secret_seed, public_seed, adrs: ADRS):
+
     counter = generate_counter(m, public_seed)
     # print("Counter gen", counter)
     msg = prepare_msg(m, public_seed, counter)
 
-    
     sig = []
-    for i in range(0, len_1):
+    for i in range(0, len_x):
         adrs.set_chain_address(i)
         adrs.set_hash_address(0)
         sk = prf(secret_seed, adrs.copy())
@@ -73,13 +72,13 @@ def wots_sign(m, secret_seed, public_seed, adrs:ADRS):
     return sig, [int_to_bytes(counter)]
 
 
-def wots_pk_from_sig(sig, m, public_seed, adrs: ADRS, counter = 0):
+def wots_pk_from_sig(sig, m, public_seed, adrs: ADRS, counter=0):
 
     wots_pk_adrs = adrs.copy()
     msg = prepare_msg(m, public_seed, counter)
 
     tmp = bytes()
-    for i in range(0, len_1):
+    for i in range(0, len_x):
         adrs.set_chain_address(i)
         tmp += chain(sig[i], msg[i], w - 1 - msg[i], public_seed, adrs.copy())
 
@@ -112,6 +111,7 @@ def generate_counter(m, public_seed, adrs: ADRS = ADRS()):
 
     return counter
 
+
 def prepare_msg(m, public_seed, counter, adrs: ADRS = ADRS()):
     mask = (~0 << (8 - WOTS_ZERO_BITS)) & 0xFFFFFFFF
     csum = 0
@@ -121,8 +121,9 @@ def prepare_msg(m, public_seed, counter, adrs: ADRS = ADRS()):
     bitmask = thash_init_bitmask(adrs, public_seed)
     adrs_bin = ull_to_bytes(adrs, COUNTER_SIZE, counter, SPX_OFFSER_COUNTER)
     digest = thash_fin(m, adrs_bin, bitmask, public_seed)
-    msg = base_w(digest, w, len_1)
+    msg = base_w(digest, w, len_x)
     return msg
+
 
 def ull_to_bytes(adrs, outlen, in_, offset=0):
     adrs_ = bytearray(adrs.to_bin())
@@ -148,7 +149,7 @@ def thash_fin(m, adrs: ADRS, bitmask, public_seed):
 
 
 def chain_lengths(m):
-    lengths = base_w(m, w, len_1)
+    lengths = base_w(m, w, len_x)
     csum = wots_checksum(lengths)
     lengths = [bytes([num]) for num in lengths]
     return lengths, csum

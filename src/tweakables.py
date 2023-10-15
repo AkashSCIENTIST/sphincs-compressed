@@ -11,7 +11,8 @@ import random
 import ctypes
 # import skein
 
-def hash(seed, adrs: ADRS, value, counter = None, digest_size=n):
+
+def hash(seed, adrs: ADRS, value, counter=None, digest_size=n):
     m = hashlib.sha512()
     # m = hashlib.blake2b()
     # m = skein.skein512()
@@ -31,11 +32,10 @@ def hash(seed, adrs: ADRS, value, counter = None, digest_size=n):
     return hashed
 
 
-def hash2(seed, adrs: ADRS, value, counter = None, digest_size=n):
+def hash2(seed, adrs: ADRS, value, counter=None, digest_size=n):
     m = hashlib.sha512()
     # m = hashlib.blake2b()
     # m = skein.skein512()
-
 
     m.update(seed)
     if type(adrs) == ADRS:
@@ -83,7 +83,9 @@ def hash_msgg(r, public_seed, public_root, value, digest_size=n):
     return hashed
 
 # FORS+C
-def hash_with_counter(r, public_seed, public_root, value, counter_bytes, digest_size=n): 
+
+
+def hash_with_counter(r, public_seed, public_root, value, counter_bytes, digest_size=n):
     m = hashlib.sha256()
     m.update(r)
     m.update(public_seed)
@@ -108,6 +110,7 @@ def hash_with_counter(r, public_seed, public_root, value, counter_bytes, digest_
 
     return hashed
 
+
 def hash_msg(r, public_seed, public_root, value, counter, digest_size=n):
     buf = bytearray(SPX_DGST_BYTES)
     bufp = buf
@@ -120,7 +123,8 @@ def hash_msg(r, public_seed, public_root, value, counter, digest_size=n):
     # verify stage
     if counter[0] != 0:
         counter_bytes = int.to_bytes(counter[0], COUNTER_SIZE, 'big')
-        buf = hash_with_counter(r, public_seed, public_root, value, counter_bytes, digest_size=n)
+        buf = hash_with_counter(
+            r, public_seed, public_root, value, counter_bytes, digest_size=n)
         # If the expected bits are not zero the verification fails.
         zero_bits = int.from_bytes(buf, 'big') & mask
         if zero_bits != 0:
@@ -131,7 +135,8 @@ def hash_msg(r, public_seed, public_root, value, counter, digest_size=n):
             if counter[0] > MAX_HASH_TRIALS_FORS:
                 return -1
             counter_bytes = int.to_bytes(counter[0], COUNTER_SIZE, 'big')
-            buf = hash_with_counter(r, public_seed, public_root, value, counter_bytes, digest_size=n)
+            buf = hash_with_counter(
+                r, public_seed, public_root, value, counter_bytes, digest_size=n)
             zero_bits = int.from_bytes(buf, 'big') & mask
             if zero_bits == 0:
                 found_flag = 0
@@ -141,7 +146,8 @@ def hash_msg(r, public_seed, public_root, value, counter, digest_size=n):
     digest = buf
     # bufp += SPX_FORS_MSG_BYTES
     if SPX_TREE_BITS > 64:
-        raise ValueError("For given height and depth, 64 bits cannot represent all subtrees")
+        raise ValueError(
+            "For given height and depth, 64 bits cannot represent all subtrees")
     tree = int.from_bytes(buf, byteorder='big')
     tree &= (~(2**64) - 1) >> (64 - SPX_TREE_BITS)
     # bufp += SPX_TREE_BYTES
@@ -150,22 +156,29 @@ def hash_msg(r, public_seed, public_root, value, counter, digest_size=n):
 
     return digest
 
+
 def save_fors_counter(counter, sig):
     counter_bytes = int.to_bytes(counter[0], COUNTER_SIZE, 'big')
     sig += [counter_bytes]
 
+
 def get_fors_counter(sig):
     return sig[-1]
+
 
 def get_wots_counters(sig):
     return sig[-2]
 # FORS+C
 
+
 def prf_msg(secret_seed, opt, m, digest_size):
-    random.seed(int.from_bytes(secret_seed + opt + hash_msgg(b'0', b'0', b'0', m, digest_size * 2), "big"))
+    random.seed(int.from_bytes(secret_seed + opt +
+                hash_msgg(b'0', b'0', b'0', m, digest_size * 2), "big"))
     return random.randint(0, 256 ** digest_size - 1).to_bytes(digest_size, byteorder='big')
 # Input: len_X-byte string X, int w, output length out_len
 # Output: out_len int array basew
+
+
 def base_w(x, w, out_len):
     vin = 0
     vout = 0
@@ -187,26 +200,18 @@ def base_w(x, w, out_len):
 
 # def sig_wots_from_sig_xmss(sig, is_counter = False):
 def sig_wots_from_sig_xmss(sig):
-    # if is_counter:
-    #     return sig[1:len_1+1], sig[0]
-    # else:
-    #     return sig[0:len_1], 0
-    return sig[0:len_1]
+    return sig[0:len_x]
 
 
 # def auth_from_sig_xmss(sig, is_counter = False):
 def auth_from_sig_xmss(sig):
-    # if is_counter:
-    #     return sig[len_1+1:]
-    # else:
-    #     return sig[len_1:]
-    return sig[len_1:]
+    return sig[len_x:]
 
 
 def sigs_xmss_from_sig_ht(sig):
     sigs = []
     for i in range(0, d):
-        sigs.append(sig[i*(h_prime + len_1):(i+1)*(h_prime + len_1)])
+        sigs.append(sig[i*(h_prime + len_x):(i+1)*(h_prime + len_x)])
 
     return sigs
 
@@ -227,6 +232,7 @@ def bytes_to_int(byte_data):
 
 def int_to_bytes(n):
     return n.to_bytes((n.bit_length() + 7) // 8, 'big', signed=False)
+
 
 def flatten(input_list):
     return [item for sublist in input_list for item in (flatten(sublist) if isinstance(sublist, list) else [sublist])]

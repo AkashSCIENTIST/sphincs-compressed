@@ -165,7 +165,7 @@ class Sphincs():
         :return: Boolean True if signature correct
         """
         pk_tab = []
-        print("Last 10", sig[-10:])
+        # print("Last 10", sig[-10:])
 
         for i in range(0, 2):
             pk_tab.append(pk[(i * n):((i + 1) * n)])

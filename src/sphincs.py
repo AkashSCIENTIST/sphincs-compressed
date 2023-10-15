@@ -90,7 +90,7 @@ def spx_sign(m, secret_key):
 
     adrs.set_type(ADRS.TREE)
     sig_ht, wots_counters = ht_sign(pk_fors, secret_seed, public_seed, idx_tree, idx_leaf)
-    print("Counters", wots_counters)
+    # print("Counters", wots_counters)
     # print("sign sig_ht")
     # print(sig_ht)
     # sig_ht = sig_ht[4:]
@@ -101,8 +101,8 @@ def spx_sign(m, secret_key):
     # save at last to not disturb other indexes, as 
     # other places use indexes to access specific elements
     save_fors_counter(counter, sig)
-    print("Len Sign Array", len(sig))
-    print(sig[-2:])
+    # print("Len Sign Array", len(sig))
+    # print(sig[-2:])
     print("Length of signature", sum([len(i) for i in flatten(sig)]))
     return sig
 
