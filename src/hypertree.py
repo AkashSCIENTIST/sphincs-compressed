@@ -51,7 +51,6 @@ def ht_sign(m, secret_seed, public_seed, idx_tree, idx_leaf):
 # Output: Boolean
 def ht_verify(m, sig_ht, public_seed, idx_tree, idx_leaf, public_key_ht, counters):
     adrs = ADRS()
-    print("Verify Counters", len(counters))
     
 
     sigs_xmss = sigs_xmss_from_sig_ht(sig_ht)

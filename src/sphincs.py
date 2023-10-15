@@ -115,7 +115,8 @@ def spx_verify(m, sig, public_key):
     r = sig[0]
     sig_fors = sig[1]
     sig_ht = sig[2]
-    wots_counters = sig[-2]
+    # wots_counters = sig[-2]
+    wots_counters = get_wots_counters(sig)
 
     public_seed = public_key[0]
     public_root = public_key[1]

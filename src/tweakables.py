@@ -156,6 +156,9 @@ def save_fors_counter(counter, sig):
 
 def get_fors_counter(sig):
     return sig[-1]
+
+def get_wots_counters(sig):
+    return sig[-2]
 # FORS+C
 
 def prf_msg(secret_seed, opt, m, digest_size):
