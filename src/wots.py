@@ -56,20 +56,11 @@ def wots_pk_gen(secret_seed, public_seed, adrs: ADRS):
 
 # Input: Message M, secret seed SK.seed, public seed PK.seed, address ADRS
 # Output: WOTS+ signature sig
-def wots_sign(m, secret_seed, public_seed, adrs:ADRS, is_counter = False):
+def wots_sign(m, secret_seed, public_seed, adrs:ADRS):
     
-    counter = 0
-    if is_counter:
-        counter = generate_counter(m, public_seed)
-        # print("Counter gen", counter)
-        msg = prepare_msg(m, public_seed, counter)
-    else:
-        counter = generate_counter(m, public_seed)
-        # print("Counter gen", counter)
-        # m = hash(public_seed, ADRS(), m, counter) + \
-        #     hash2(public_seed, ADRS(), m, counter)
-        # msg = base_w(m, w, len_1)
-        msg = prepare_msg(m, public_seed, counter)
+    counter = generate_counter(m, public_seed)
+    # print("Counter gen", counter)
+    msg = prepare_msg(m, public_seed, counter)
 
     
     sig = []
@@ -82,20 +73,10 @@ def wots_sign(m, secret_seed, public_seed, adrs:ADRS, is_counter = False):
     return sig, [int_to_bytes(counter)]
 
 
-def wots_pk_from_sig(sig, m, public_seed, adrs: ADRS, counter = 0, is_counter = False):
+def wots_pk_from_sig(sig, m, public_seed, adrs: ADRS, counter = 0):
 
     wots_pk_adrs = adrs.copy()
-    if is_counter:
-        counter = generate_counter(m, public_seed)
-        # print("Counter verify", counter)
-        msg = prepare_msg(m, public_seed, counter)
-    else:
-        counter = generate_counter(m, public_seed)
-        # print("Counter verify", counter)
-        # m = hash(public_seed, ADRS(), m, counter) + \
-        #     hash2(public_seed, ADRS(), m, counter)
-        # msg = base_w(m, w, len_1)
-        msg = prepare_msg(m, public_seed, counter)
+    msg = prepare_msg(m, public_seed, counter)
 
     tmp = bytes()
     for i in range(0, len_1):

@@ -155,7 +155,7 @@ def save_fors_counter(counter, sig):
     sig += [counter_bytes]
 
 def get_fors_counter(sig):
-    return sig[3]
+    return sig[-1]
 # FORS+C
 
 def prf_msg(secret_seed, opt, m, digest_size):
@@ -182,18 +182,22 @@ def base_w(x, w, out_len):
     return basew
 
 
-def sig_wots_from_sig_xmss(sig, is_counter = False):
-    if is_counter:
-        return sig[1:len_1+1], sig[0]
-    else:
-        return sig[0:len_1], 0
+# def sig_wots_from_sig_xmss(sig, is_counter = False):
+def sig_wots_from_sig_xmss(sig):
+    # if is_counter:
+    #     return sig[1:len_1+1], sig[0]
+    # else:
+    #     return sig[0:len_1], 0
+    return sig[0:len_1]
 
 
-def auth_from_sig_xmss(sig, is_counter = False):
-    if is_counter:
-        return sig[len_1+1:]
-    else:
-        return sig[len_1:]
+# def auth_from_sig_xmss(sig, is_counter = False):
+def auth_from_sig_xmss(sig):
+    # if is_counter:
+    #     return sig[len_1+1:]
+    # else:
+    #     return sig[len_1:]
+    return sig[len_1:]
 
 
 def sigs_xmss_from_sig_ht(sig):

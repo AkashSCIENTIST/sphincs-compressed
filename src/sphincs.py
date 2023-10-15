@@ -89,16 +89,20 @@ def spx_sign(m, secret_key):
     # print(pk_fors)
 
     adrs.set_type(ADRS.TREE)
-    sig_ht = ht_sign(pk_fors, secret_seed, public_seed, idx_tree, idx_leaf)
+    sig_ht, wots_counters = ht_sign(pk_fors, secret_seed, public_seed, idx_tree, idx_leaf)
+    print("Counters", wots_counters)
     # print("sign sig_ht")
     # print(sig_ht)
     # sig_ht = sig_ht[4:]
 
     sig += [sig_ht]
+    sig += [wots_counters]
     # print(sig_ht)
     # save at last to not disturb other indexes, as 
     # other places use indexes to access specific elements
     save_fors_counter(counter, sig)
+    print("Len Sign Array", len(sig))
+    print(sig[-2:])
     print("Length of signature", sum([len(i) for i in flatten(sig)]))
     return sig
 
@@ -111,6 +115,7 @@ def spx_verify(m, sig, public_key):
     r = sig[0]
     sig_fors = sig[1]
     sig_ht = sig[2]
+    wots_counters = sig[-2]
 
     public_seed = public_key[0]
     public_root = public_key[1]
@@ -158,4 +163,4 @@ def spx_verify(m, sig, public_key):
 
     # sig_ht = sig_ht[:len(sig_ht) - 4]
     # print(sig_ht)
-    return ht_verify(pk_fors, sig_ht, public_seed, idx_tree, idx_leaf, public_root)
+    return ht_verify(pk_fors, sig_ht, public_seed, idx_tree, idx_leaf, public_root, wots_counters)

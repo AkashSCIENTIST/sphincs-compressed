@@ -150,7 +150,9 @@ class Sphincs():
             sig += i
         for i in sig_tab[2]:  # SIG Hypertree
             sig += i
-        sig += sig_tab[3]
+        for i in sig_tab[3]:  # WOTS Counters
+            sig += i
+        sig += sig_tab[4]
         # print(len(sig))
         return sig
 
@@ -163,6 +165,7 @@ class Sphincs():
         :return: Boolean True if signature correct
         """
         pk_tab = []
+        print("Last 10", sig[-10:])
 
         for i in range(0, 2):
             pk_tab.append(pk[(i * n):((i + 1) * n)])
