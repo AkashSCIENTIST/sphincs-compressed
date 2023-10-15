@@ -99,7 +99,7 @@ def spx_sign(m, secret_key):
     # save at last to not disturb other indexes, as 
     # other places use indexes to access specific elements
     save_fors_counter(counter, sig)
-
+    print("Length of signature", sum([len(i) for i in flatten(sig)]))
     return sig
 
 
