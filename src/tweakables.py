@@ -9,7 +9,7 @@ import math
 import hashlib
 import random
 import ctypes
-import skein
+# import skein
 
 def hash(seed, adrs: ADRS, value, counter = None, digest_size=n):
     m = hashlib.sha512()
