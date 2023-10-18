@@ -543,11 +543,11 @@ def ht_verify(m, sig_ht, public_seed, idx_tree, idx_leaf, public_key_ht, counter
 
         node = xmss_pk_from_sig(idx_leaf, sig_tmp, node, public_seed, adrs, counters[j])
     
-    print("Checking Integration")
-    print("key 1")
-    print(node)
-    print("Key 2")
-    print(public_key_ht)
+    # print("Checking Integration")
+    # print("key 1")
+    # print(node)
+    # print("Key 2")
+    # print(public_key_ht)
     if node == public_key_ht:
         return True
     else:
