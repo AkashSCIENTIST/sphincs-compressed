@@ -1,4 +1,4 @@
-import EccCore
+import crypto.python.EccCore
 import hashlib
 import random
 import numpy as np

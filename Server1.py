@@ -7,7 +7,7 @@ import numpy as np
 import math
 
 # Choose the appropriate client
-client = MongoClient()
+client = MongoClient("mongodb+srv://Cluster73137:S3PNMwUmMaAQpzPI@cluster73137.l29srvj.mongodb.net/")
 db=client.server1
 
 mod = pow(2, 256) - pow(2, 32) - pow(2, 9) - pow(2, 8) - pow(2, 7) - pow(2, 6) - pow(2, 4) - pow(2, 0)

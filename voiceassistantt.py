@@ -1,5 +1,5 @@
-# import cv2
-# import face_recognition
+import cv2
+import face_recognition
 import os
 import numpy as np
 import datetime
@@ -7,39 +7,40 @@ import pickle
 import datetime
 import hashlib
 import json
-# from sibc.sidh import SIKE, default_parameters
+from sibc.sidh import SIKE, default_parameters
 import time
-# import speech_recognition as sr
-# import pyttsx3
+import speech_recognition as sr
+import pyttsx3
 import datetime
-# import wikipedia
+import wikipedia
 import webbrowser
 import os
 import time
 import subprocess
-# from ecapture import ecapture as ec
-# import wolframalpha
+from ecapture import ecapture as ec
+import wolframalpha
 import json
-# import requests
+import requests
+
 import hashlib
 import random
 import numpy as np
 import math
 import sys
-# from bson import json_util
+from bson import json_util
 applyKeyExchange = True
-sys.path.insert(0,'sibc\crypto\python')
+sys.path.insert(0,'crypto/python')
 import sys
 sys.path.insert(0,'sibc')
 from Server2 import digitalSignature,add_block
-# from pymongo import MongoClient
-# from EccApp import validate
+from pymongo import MongoClient
+from crypto.python.EccApp import validate
 from crypto.python import EccCore
 import base64
 from package.sphincs import Sphincs
+
 sphincs = Sphincs()
 sphincs.set_winternitz(4)
-
 
 sphincs.set_hypertree_height(32)
 
@@ -79,16 +80,16 @@ class Blockchain:
                  'gas_value':gas_value
                  }
         print(block)
-        # client = MongoClient()
-        # db=client.VoiceAssistant
+        client = MongoClient("mongodb+srv://Cluster73137:S3PNMwUmMaAQpzPI@cluster73137.l29srvj.mongodb.net/")
+        db=client.VoiceAssistant
         
-        # Blockchain= db.Blockchain
-        # block['index']=str(block['index'])
-        # block['timestamp']=str(block['timestamp'])
-        # block['proof']=str(block['proof'])
-        # block['previous_hash']=str(block['previous_hash'])
-        # block['value']=str(block['value'])
-        # result=Blockchain.insert_one(block)
+        Blockchain= db.Blockchain
+        block['index']=str(block['index'])
+        block['timestamp']=str(block['timestamp'])
+        block['proof']=str(block['proof'])
+        block['previous_hash']=str(block['previous_hash'])
+        block['value']=str(block['value'])
+        result=Blockchain.insert_one(block)
         add_block(block)
         self.chain.append(block)
         return block
@@ -113,9 +114,9 @@ class Blockchain:
 
         return new_proof
 
-    # def hash(self, block):
-    #     encoded_block = json_util.dumps(block, sort_keys=True).encode()
-    #     return hashlib.sha256(encoded_block).hexdigest()
+    def hash(self, block):
+        encoded_block = json_util.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(encoded_block).hexdigest()
 
     def chain_valid(self, chain):
         previous_block = chain[0]
@@ -145,7 +146,7 @@ def compare(value):
     
 # class Transaction:
 #     def __init__(self):
-#         self.s, self.private_key, self.public_key = sike.KeyGen()
+#         self.private_key, self.public_key = sphincs.spx_keygen()
         
 #     def cmp1(self):
 #         c, K = sike.Encaps(self.public_key)
@@ -158,16 +159,15 @@ def compare(value):
 #             return True
 #         else:
 #             return False
-
 def decode():
-    rootdir = r'C:\Users\USER\Desktop\sikeimp\sibc\Binary'
+    rootdir = r'./Binary'
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
             itr = open(os.path.join(subdir, file), 'rb')
             byte = itr.read()
             itr.close()
 
-            value=r"C:/Users/USER/Desktop/sikeimp/sibc/dataset2/"
+            value=r"./dataset2/"
             value+=file[:-4]
             value+=".jpg"
             decodeit = open(value, 'wb')
@@ -194,283 +194,283 @@ def addblock(value,gas):
     else:
         print("Valid Key is required")
 # #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# def facerecog():
-#     # decode()
-#     path = 'sibc\dataset2'
-#     images = []
-#     classNames = []
-#     mylist = os.listdir(path)
-#     for cl in mylist:
-#         curImg = cv2.imread(f'{path}/{cl}')
-#         images.append(curImg)
-#         classNames.append(os.path.splitext(cl)[0])
+def facerecog():
+    # decode()
+    path = 'dataset2'
+    images = []
+    classNames = []
+    mylist = os.listdir(path)
+    for cl in mylist:
+        curImg = cv2.imread(f'{path}/{cl}')
+        images.append(curImg)
+        classNames.append(os.path.splitext(cl)[0])
 
-#     def findEncodings(images):
-#         encodeList = []
-#         for img in images:
-#             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-#             encoded_face = face_recognition.face_encodings(img)[0]
-#             encodeList.append(encoded_face)
-#         return encodeList
-#     encoded_face_train = findEncodings(images)
-#     nameList = []
-#     def markAttendance(name):
-#         with open('sibc\Attendance.csv','r+') as f:
-#             myDataList = f.readlines()
+    def findEncodings(images):
+        encodeList = []
+        for img in images:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            encoded_face = face_recognition.face_encodings(img)[0]
+            encodeList.append(encoded_face)
+        return encodeList
+    encoded_face_train = findEncodings(images)
+    nameList = []
+    def markAttendance(name):
+        with open('Attendance.csv','r+') as f:
+            myDataList = f.readlines()
             
-#             for line in myDataList:
-#                 entry = line.split(',')
-#                 nameList.append(entry[0])
-#             if name=="UnkNown":
-#                 now = datetime.datetime.now()
-#                 time = now.strftime('%I:%M:%S:%p')
-#                 date = now.strftime('%d-%B-%Y')
-#                 f.writelines(f'\n{name}, {time}, {date}')
-#             elif name not in nameList:
-#                 now = datetime.datetime.now()
-#                 time = now.strftime('%I:%M:%S:%p')
-#                 date = now.strftime('%d-%B-%Y')
-#                 f.writelines(f'\n{name}, {time}, {date}')
+            for line in myDataList:
+                entry = line.split(',')
+                nameList.append(entry[0])
+            if name=="UnkNown":
+                now = datetime.datetime.now()
+                time = now.strftime('%I:%M:%S:%p')
+                date = now.strftime('%d-%B-%Y')
+                f.writelines(f'\n{name}, {time}, {date}')
+            elif name not in nameList:
+                now = datetime.datetime.now()
+                time = now.strftime('%I:%M:%S:%p')
+                date = now.strftime('%d-%B-%Y')
+                f.writelines(f'\n{name}, {time}, {date}')
 
-#     cap  = cv2.VideoCapture(0)
-#     while True:
-#         success, img = cap.read()
-#         imgS = cv2.resize(img, (0,0), None, 0.25,0.25)
-#         imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
-#         faces_in_frame = face_recognition.face_locations(imgS)
-#         encoded_faces = face_recognition.face_encodings(imgS, faces_in_frame)
-#         for encode_face, faceloc in zip(encoded_faces,faces_in_frame):
-#             matches = face_recognition.compare_faces(encoded_face_train, encode_face)
-#             faceDist = face_recognition.face_distance(encoded_face_train, encode_face)
-#             matchIndex = np.argmin(faceDist)
-#             # print(matchIndex)
-#             if matches[matchIndex]:
-#                 name = classNames[matchIndex].upper().lower()
-#                 y1,x2,y2,x1 = faceloc
-#                 # since we scaled down by 4 times
-#                 y1, x2,y2,x1 = y1*4,x2*4,y2*4,x1*4
-#                 cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
-#                 cv2.rectangle(img, (x1,y2-35),(x2,y2), (0,255,0), cv2.FILLED)
-#                 cv2.putText(img,name, (x1+6,y2-5), cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
-#                 markAttendance(name)
-#             else:
-#                 markAttendance('UnkNown')
-#                 # print(encode_face.type)
-#                 # print(str(img))
+    cap  = cv2.VideoCapture(0)
+    while True:
+        success, img = cap.read()
+        imgS = cv2.resize(img, (0,0), None, 0.25,0.25)
+        imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
+        faces_in_frame = face_recognition.face_locations(imgS)
+        encoded_faces = face_recognition.face_encodings(imgS, faces_in_frame)
+        for encode_face, faceloc in zip(encoded_faces,faces_in_frame):
+            matches = face_recognition.compare_faces(encoded_face_train, encode_face)
+            faceDist = face_recognition.face_distance(encoded_face_train, encode_face)
+            matchIndex = np.argmin(faceDist)
+            # print(matchIndex)
+            if matches[matchIndex]:
+                name = classNames[matchIndex].upper().lower()
+                y1,x2,y2,x1 = faceloc
+                # since we scaled down by 4 times
+                y1, x2,y2,x1 = y1*4,x2*4,y2*4,x1*4
+                cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
+                cv2.rectangle(img, (x1,y2-35),(x2,y2), (0,255,0), cv2.FILLED)
+                cv2.putText(img,name, (x1+6,y2-5), cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
+                markAttendance(name)
+            else:
+                markAttendance('UnkNown')
+                # print(encode_face.type)
+                # print(str(img))
                 
-#                 addblock(str(img),np.sum(img))
-#                 # print(base64.b64encode(img))
-#         cv2.imshow('webcam', img)
-#         if cv2.waitKey(1) & 0xFF == ord('q'):
-#             break
-# #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                addblock(str(img),np.sum(img))
+                # print(base64.b64encode(img))
+        cv2.imshow('webcam', img)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# print('Loading your AI personal assistant - G One')
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+print('Loading your AI personal assistant - G One')
 
-# engine=pyttsx3.init('sapi5')
-# voices=engine.getProperty('voices')
-# engine.setProperty('voice','voices[0].id')
+engine=pyttsx3.init('dummy')
+voices=engine.getProperty('voices')
+engine.setProperty('voice','voices[0].id')
 
 
-# def speak(text):
-#     engine.say(text)
-#     engine.runAndWait()
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
 
-# def wishMe():
-#     hour=datetime.datetime.now().hour
-#     if hour>=0 and hour<12:
-#         speak("Hello,Good Morning")
-#         print("Hello,Good Morning")
-#     elif hour>=12 and hour<18:
-#         speak("Hello,Good Afternoon")
-#         print("Hello,Good Afternoon")
-#     else:
-#         speak("Hello,Good Evening")
-#         print("Hello,Good Evening")
+def wishMe():
+    hour=datetime.datetime.now().hour
+    if hour>=0 and hour<12:
+        speak("Hello,Good Morning")
+        print("Hello,Good Morning")
+    elif hour>=12 and hour<18:
+        speak("Hello,Good Afternoon")
+        print("Hello,Good Afternoon")
+    else:
+        speak("Hello,Good Evening")
+        print("Hello,Good Evening")
 
-# def takeCommand():
-#     r=sr.Recognizer()
-#     with sr.Microphone() as source:
-#         print("Listening...")
-#         audio=r.listen(source)
+def takeCommand():
+    r=sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio=r.listen(source)
 
-#         try:
-#             statement=r.recognize_google(audio,language='en-in')
-#             print(f"user said:{statement}\n")
+        try:
+            statement=r.recognize_google(audio,language='en-in')
+            print(f"user said:{statement}\n")
 
-#         except Exception as e:
-#             speak("Pardon me, please say that again")
-#             return "None"
-#         return statement
+        except Exception as e:
+            speak("Pardon me, please say that again")
+            return "None"
+        return statement
 
-# speak("Loading your AI personal assistant G-One")
-# wishMe()
+speak("Loading your AI personal assistant G-One")
+wishMe()
 
-# def Register():
-#     while True:
-#         speak("Tell me how can I help you now?")
-#         statement = takeCommand().lower()
+def Register():
+    while True:
+        speak("Tell me how can I help you now?")
+        statement = takeCommand().lower()
 
-#         if statement==0:
-#             continue
-#         if "register" in statement:
-#             flag=False
-#             while True:
-#                 speak("Tell me the Password")
-#                 stat=takeCommand().lower()
-#                 if(stat==0):
-#                     continue
-#                 else:
-#                     if(validate(stat,True)):
-#                         flag=True
-#                 if(flag):
-#                     return True
-#                     break
-#         else:
-#             while True:
-#                 speak("Tell me the Password")
-#                 stat=takeCommand().lower()
-#                 if(stat==0):
-#                     continue
-#                 else:
-#                     return validate(stat,False)
+        if statement==0:
+            continue
+        if "register" in statement:
+            flag=False
+            while True:
+                speak("Tell me the Password")
+                stat=takeCommand().lower()
+                if(stat==0):
+                    continue
+                else:
+                    if(validate(stat,True)):
+                        flag=True
+                if(flag):
+                    return True
+                    break
+        else:
+            while True:
+                speak("Tell me the Password")
+                stat=takeCommand().lower()
+                if(stat==0):
+                    continue
+                else:
+                    return validate(stat,False)
 if __name__=='__main__':
     print(compare("Hello"))
-    # facerecog()
-    # if(Register()==False):
-    #     speak("You are not a valid user")
-    # else:
-        # while True:
-        #     speak("Tell me how can I help you now?")
-        #     statement = takeCommand().lower()
+    facerecog()
+    if(Register()==False):
+        speak("You are not a valid user")
+    else:
+        while True:
+            speak("Tell me how can I help you now?")
+            statement = takeCommand().lower()
 
-        #     if statement==0:
-        #         continue
-        #     client = MongoClient()
-        #     db=client.server1
-        #     voiceDetails = {'command': statement,'time': str(datetime.datetime.now())}
-        #     VoiceCommands= db.VoiceCommands
-        #     result=VoiceCommands.insert_one(voiceDetails)
-        #     if "good bye" in statement or "ok bye" in statement or "stop" in statement:
-        #         speak('your personal assistant G-one is shutting down,Good bye')
-        #         print('your personal assistant G-one is shutting down,Good bye')
-        #         break
-
-
-
-        #     if 'wikipedia' in statement:
-        #         speak('Searching Wikipedia...')
-        #         statement =statement.replace("wikipedia", "")
-        #         results = wikipedia.summary(statement, sentences=3)
-        #         speak("According to Wikipedia")
-        #         print(results)
-        #         speak(results)
-
-        #     elif 'open youtube' in statement:
-        #         webbrowser.open_new_tab("https://www.youtube.com")
-        #         speak("youtube is open now")
-        #         time.sleep(5)
-
-        #     elif 'open google' in statement:
-        #         webbrowser.open_new_tab("https://www.google.com")
-        #         speak("Google chrome is open now")
-        #         time.sleep(5)
-
-        #     elif 'open gmail' in statement:
-        #         webbrowser.open_new_tab("gmail.com")
-        #         speak("Google Mail open now")
-        #         time.sleep(5)
-
-        #     elif "weather" in statement:
-        #         api_key="8ef61edcf1c576d65d836254e11ea420"
-        #         base_url="https://api.openweathermap.org/data/2.5/weather?"
-        #         speak("whats the city name")
-        #         city_name=takeCommand()
-        #         complete_url=base_url+"appid="+api_key+"&q="+city_name
-        #         response = requests.get(complete_url)
-        #         x=response.json()
-        #         if x["cod"]!="404":
-        #             y=x["main"]
-        #             current_temperature = y["temp"]
-        #             current_humidiy = y["humidity"]
-        #             z = x["weather"]
-        #             weather_description = z[0]["description"]
-        #             speak(" Temperature in kelvin unit is " +
-        #                 str(current_temperature) +
-        #                 "\n humidity in percentage is " +
-        #                 str(current_humidiy) +
-        #                 "\n description  " +
-        #                 str(weather_description))
-        #             print(" Temperature in kelvin unit = " +
-        #                 str(current_temperature) +
-        #                 "\n humidity (in percentage) = " +
-        #                 str(current_humidiy) +
-        #                 "\n description = " +
-        #                 str(weather_description))
-
-        #         else:
-        #             speak(" City Not Found ")
+            if statement==0:
+                continue
+            client = MongoClient("mongodb+srv://Cluster73137:S3PNMwUmMaAQpzPI@cluster73137.l29srvj.mongodb.net/")
+            db=client.server1
+            voiceDetails = {'command': statement,'time': str(datetime.datetime.now())}
+            VoiceCommands= db.VoiceCommands
+            result=VoiceCommands.insert_one(voiceDetails)
+            if "good bye" in statement or "ok bye" in statement or "stop" in statement:
+                speak('your personal assistant G-one is shutting down,Good bye')
+                print('your personal assistant G-one is shutting down,Good bye')
+                break
 
 
 
-        #     elif 'time' in statement:
-        #         strTime=datetime.datetime.now().strftime("%H:%M:%S")
-        #         speak(f"the time is {strTime}")
+            if 'wikipedia' in statement:
+                speak('Searching Wikipedia...')
+                statement =statement.replace("wikipedia", "")
+                results = wikipedia.summary(statement, sentences=3)
+                speak("According to Wikipedia")
+                print(results)
+                speak(results)
 
-        #     elif 'who are you' in statement or 'what can you do' in statement:
-        #         speak('I am G-one version 1 point O your persoanl assistant. I am programmed to minor tasks like'
-        #             'opening youtube,google chrome,gmail and stackoverflow ,predict time,take a photo,search wikipedia,predict weather' 
-        #             'in different cities , get top headline news from times of india and you can ask me computational or geographical questions too!')
+            elif 'open youtube' in statement:
+                webbrowser.open_new_tab("https://www.youtube.com")
+                speak("youtube is open now")
+                time.sleep(5)
+
+            elif 'open google' in statement:
+                webbrowser.open_new_tab("https://www.google.com")
+                speak("Google chrome is open now")
+                time.sleep(5)
+
+            elif 'open gmail' in statement:
+                webbrowser.open_new_tab("gmail.com")
+                speak("Google Mail open now")
+                time.sleep(5)
+
+            elif "weather" in statement:
+                api_key="8ef61edcf1c576d65d836254e11ea420"
+                base_url="https://api.openweathermap.org/data/2.5/weather?"
+                speak("whats the city name")
+                city_name=takeCommand()
+                complete_url=base_url+"appid="+api_key+"&q="+city_name
+                response = requests.get(complete_url)
+                x=response.json()
+                if x["cod"]!="404":
+                    y=x["main"]
+                    current_temperature = y["temp"]
+                    current_humidiy = y["humidity"]
+                    z = x["weather"]
+                    weather_description = z[0]["description"]
+                    speak(" Temperature in kelvin unit is " +
+                        str(current_temperature) +
+                        "\n humidity in percentage is " +
+                        str(current_humidiy) +
+                        "\n description  " +
+                        str(weather_description))
+                    print(" Temperature in kelvin unit = " +
+                        str(current_temperature) +
+                        "\n humidity (in percentage) = " +
+                        str(current_humidiy) +
+                        "\n description = " +
+                        str(weather_description))
+
+                else:
+                    speak(" City Not Found ")
 
 
-        #     elif "who made you" in statement or "who created you" in statement or "who discovered you" in statement:
-        #         speak("I was built by Mirthula")
-        #         print("I was built by Mirthula")
 
-        #     elif "open stackoverflow" in statement:
-        #         webbrowser.open_new_tab("https://stackoverflow.com/login")
-        #         speak("Here is stackoverflow")
+            elif 'time' in statement:
+                strTime=datetime.datetime.now().strftime("%H:%M:%S")
+                speak(f"the time is {strTime}")
 
-        #     elif 'news' in statement:
-        #         news = webbrowser.open_new_tab("https://timesofindia.indiatimes.com/home/headlines")
-        #         speak('Here are some headlines from the Times of India,Happy reading')
-        #         time.sleep(6)
-
-        #     elif "camera" in statement or "take a photo" in statement:
-        #         ec.capture(0,"robo camera","img.jpg")
-
-        #     elif 'search'  in statement:
-        #         statement = statement.replace("search", "")
-        #         webbrowser.open_new_tab(statement)
-        #         time.sleep(5)
-
-        #     elif 'ask' in statement:
-        #         speak('I can answer to computational and geographical questions and what question do you want to ask now')
-        #         question=takeCommand()
-        #         app_id="R2K75H-7ELALHR35X"
-        #         client = wolframalpha.Client('R2K75H-7ELALHR35X')
-        #         res = client.query(question)
-        #         answer = next(res.results).text
-        #         speak(answer)
-        #         print(answer)
+            elif 'who are you' in statement or 'what can you do' in statement:
+                speak('I am G-one version 1 point O your persoanl assistant. I am programmed to minor tasks like'
+                    'opening youtube,google chrome,gmail and stackoverflow ,predict time,take a photo,search wikipedia,predict weather' 
+                    'in different cities , get top headline news from times of india and you can ask me computational or geographical questions too!')
 
 
-        #     elif "log off" in statement or "sign out" in statement:
-        #         speak("Ok , your pc will log off in 10 sec make sure you exit from all applications")
-        #         subprocess.call(["shutdown", "/l"])
+            elif "who made you" in statement or "who created you" in statement or "who discovered you" in statement:
+                speak("I was built by Mirthula")
+                print("I was built by Mirthula")
 
-        #     elif "start" in statement: 
-        #         speak('Face Recognition has just begun')
-        #         facerecog()
+            elif "open stackoverflow" in statement:
+                webbrowser.open_new_tab("https://stackoverflow.com/login")
+                speak("Here is stackoverflow")
+
+            elif 'news' in statement:
+                news = webbrowser.open_new_tab("https://timesofindia.indiatimes.com/home/headlines")
+                speak('Here are some headlines from the Times of India,Happy reading')
+                time.sleep(6)
+
+            elif "camera" in statement or "take a photo" in statement:
+                ec.capture(0,"robo camera","img.jpg")
+
+            elif 'search'  in statement:
+                statement = statement.replace("search", "")
+                webbrowser.open_new_tab(statement)
+                time.sleep(5)
+
+            elif 'ask' in statement:
+                speak('I can answer to computational and geographical questions and what question do you want to ask now')
+                question=takeCommand()
+                app_id="R2K75H-7ELALHR35X"
+                client = wolframalpha.Client('R2K75H-7ELALHR35X')
+                res = client.query(question)
+                answer = next(res.results).text
+                speak(answer)
+                print(answer)
+
+
+            elif "log off" in statement or "sign out" in statement:
+                speak("Ok , your pc will log off in 10 sec make sure you exit from all applications")
+                subprocess.call(["shutdown", "/l"])
+
+            elif "start" in statement: 
+                speak('Face Recognition has just begun')
+                facerecog()
             
 
 
-# time.sleep(3)
+time.sleep(3)
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

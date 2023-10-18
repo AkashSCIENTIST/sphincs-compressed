@@ -14,7 +14,7 @@ import requests
 
 print('Loading your AI personal assistant - G One')
 
-engine=pyttsx3.init('sapi5')
+engine=pyttsx3.init('dummy')
 voices=engine.getProperty('voices')
 engine.setProperty('voice','voices[0].id')
 
