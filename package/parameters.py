@@ -26,7 +26,7 @@ k = 8
 a = 4
 
 # Compression Factor
-cf = 5
+cf = 1
 
 # SUB VALUES (AUTOMATICS)
 
