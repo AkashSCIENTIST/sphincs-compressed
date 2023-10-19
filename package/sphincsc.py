@@ -112,6 +112,8 @@ def hash_with_counter(r, public_seed, public_root, value, counter_bytes, digest_
 
 
 def hash_msg(r, public_seed, public_root, value, counter, digest_size=n):
+    print("checking a")
+    print(k)
     buf = bytearray(SPX_DGST_BYTES)
     bufp = buf
     counter_bytes = bytearray(COUNTER_SIZE)
@@ -552,6 +554,7 @@ def ht_verify(m, sig_ht, public_seed, idx_tree, idx_leaf, public_key_ht, counter
     print("Checking Integration")
     print("key 1")
     print(node)
+    print(len(node))
     print("Key 2")
     print(public_key_ht)
     if node == public_key_ht:
@@ -695,25 +698,67 @@ class SphincsC():
     def __init__(self):
         self._randomize = True
 
-        self._n = 32
-        self._w = 16
-        self._h = 12
-        self._d = 3
-        self._k = 8
-        self._a = 4
+        self._n = n
+        self._w = w
+        self._h = h
+        self._d = d
+        self._k = k
+        self._a = a
 
-        self._len_1 = math.ceil(8 * self._n / math.log(self._w, 2))
-        self._len_2 = math.floor(math.log(self._len_1 * (self._w - 1), 2) / math.log(self._w, 2)) + 1
-        self._len_0 = self._len_1 + self._len_2
-        self._h_prime = self._h // self._d
-        self._t = 2 ** self._a
+        self._len_1 = len_1
+        self._len_2 = len_2
+        self._len_0 = len_0
+        self._h_prime = h_prime
+        self._t = t
 
     def calculate_variables(self):
+        global len_1, len_2, len_0, len_x, h_prime, t, cf, n, w, h, d, k, a
+        global COUNTER_SIZE, SPX_FORS_ZERO_LAST_BITS, MAX_HASH_TRIALS_FORS, SPX_FORS_ZEROED_BYTES, SPX_TREE_BITS, SPX_TREE_BYTES , SPX_LEAF_BITS , SPX_LEAF_BYTES, SPX_FORS_MSG_BYTES , SPX_DGST_BYTES 
+        global WOTS_ZERO_BITS , SPX_OFFSER_COUNTER , WANTED_CHECKSUM , SPX_ADDR_BYTES , SPX_WOTS_BYTES , WOTS_COUNTER_OFFSET , MAX_HASH_TRIALS_WOTS , SPX_Z 
+        
+        print("checking 12")
+        print(n) 
+
         self._len_1 = math.ceil(8 * self._n / math.log(self._w, 2))
         self._len_2 = math.floor(math.log(self._len_1 * (self._w - 1), 2) / math.log(self._w, 2)) + 1
         self._len_0 = self._len_1 + self._len_2
         self._h_prime = self._h // self._d
         self._t = 2 ** self._a
+
+        len_1 = math.ceil(8 * n / math.log(w, 2))
+        len_2 = math.floor(math.log(len_1 * (w - 1), 2) / math.log(w, 2)) + 1
+        len_0 = len_1 + len_2
+        len_x = len_0 - cf*len_2
+        if len_x <= len_0 / 2:
+            len_x = math.ceil(len_0 / 2)
+
+        # XMSS Sub-Trees height
+        h_prime = h // d
+
+        # FORS trees leaves number
+        t = 2**a
+
+        COUNTER_SIZE = 4
+        SPX_FORS_ZERO_LAST_BITS = 4
+        MAX_HASH_TRIALS_FORS = (1 << (SPX_FORS_ZERO_LAST_BITS + 10))
+        SPX_FORS_ZEROED_BYTES = ((SPX_FORS_ZERO_LAST_BITS + 7) / 8)
+        SPX_TREE_BITS = (h_prime * (d - 1))
+        SPX_TREE_BYTES = ((SPX_TREE_BITS + 7) / 8)
+        SPX_LEAF_BITS = h_prime
+        SPX_LEAF_BYTES = ((SPX_LEAF_BITS + 7) / 8)
+        SPX_FORS_MSG_BYTES = ((a * k + 7) / 8)
+        SPX_DGST_BYTES = (int)(SPX_FORS_ZEROED_BYTES + SPX_FORS_MSG_BYTES + SPX_TREE_BYTES + SPX_LEAF_BYTES)
+
+
+        WOTS_ZERO_BITS = 2
+        SPX_OFFSER_COUNTER = 24 # 14 possible value
+        WANTED_CHECKSUM = (len_1*(w-1))//2
+        SPX_ADDR_BYTES = 32
+        SPX_WOTS_BYTES = (len_1 * n)
+        WOTS_COUNTER_OFFSET = (SPX_WOTS_BYTES + h * n)
+        MAX_HASH_TRIALS_WOTS = 1 << 20
+        SPX_Z = 4
+
 
     # CLASS IMPLEMENTATION OF SPHINCS
     # =================================================
@@ -802,68 +847,92 @@ class SphincsC():
         # print(len_x)
 
     def set_security(self, val):
+        global n
         self._n = val
+        n = val
         self.calculate_variables()
 
     def set_n(self, val):
+        global n
         self._n = val
+        n = val
         self.calculate_variables()
 
     def get_security(self):
         return self._n
 
     def set_winternitz(self, val):
+        global w
         if val == 4 or val == 16 or val == 256:
             self._w = val
+            w = val
         self.calculate_variables()
 
     def set_w(self, val):
+        global w
         if val == 4 or val == 16 or val == 256:
             self._w = val
+            w = val
         self.calculate_variables()
 
     def get_winternitz(self):
         return self._w
 
     def set_hypertree_height(self, val):
+        global h
         self._h = val
+        h = val
         self.calculate_variables()
 
     def set_h(self, val):
+        global h
         self._h = val
+        h = val
         self.calculate_variables()
 
     def get_hypertree_height(self):
         return self._h
 
     def set_hypertree_layers(self, val):
+        global d
         self._d = val
+        d = val
         self.calculate_variables()
 
     def set_d(self, val):
+        global d
         self._d = val
+        d = val
         self.calculate_variables()
 
     def get_hypertree_layers(self):
         return self._d
 
     def set_fors_trees_number(self, val):
+        global k
         self._k = val
+        k = val
         self.calculate_variables()
 
     def set_k(self, val):
+        global k
         self._k = val
+        k = val
         self.calculate_variables()
 
     def get_fors_trees_number(self):
         return self._k
 
     def set_fors_trees_height(self, val):
+        global a
         self._a = val
+        a = val
         self.calculate_variables()
 
     def set_a(self, val):
+        global a
         self._a = val
+        a = val
         self.calculate_variables()
 
     def get_fors_trees_height(self):
