@@ -37,11 +37,11 @@ from pymongo import MongoClient
 from crypto.python.EccApp import validate
 from crypto.python import EccCore
 import base64
-from package.sphincs import Sphincs
+from package.sphincsc import SphincsC
 
-sphincs = Sphincs()
+sphincs = SphincsC()
 sphincs.set_winternitz(4)
-
+sphincs.set_cf(2)
 sphincs.set_hypertree_height(32)
 
 #from server1.server1_app import views

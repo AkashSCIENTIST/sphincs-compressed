@@ -200,11 +200,15 @@ def base_w(x, w, out_len):
 
 # def sig_wots_from_sig_xmss(sig, is_counter = False):
 def sig_wots_from_sig_xmss(sig):
+    # print("checking len_x")
+    # print(len_x)
     return sig[0:len_x]
 
 
 # def auth_from_sig_xmss(sig, is_counter = False):
 def auth_from_sig_xmss(sig):
+    # print("checking 2 len_x")
+    # print(len_x)
     return sig[len_x:]
 
 
@@ -342,6 +346,8 @@ def generate_counter(m, public_seed, adrs: ADRS = ADRS()):
 
 
 def prepare_msg(m, public_seed, counter, adrs: ADRS = ADRS()):
+    # print("prepare check")
+    # print(len_x)
     mask = (~0 << (8 - WOTS_ZERO_BITS)) & 0xFFFFFFFF
     csum = 0
     counter = 0
@@ -543,11 +549,11 @@ def ht_verify(m, sig_ht, public_seed, idx_tree, idx_leaf, public_key_ht, counter
 
         node = xmss_pk_from_sig(idx_leaf, sig_tmp, node, public_seed, adrs, counters[j])
     
-    # print("Checking Integration")
-    # print("key 1")
-    # print(node)
-    # print("Key 2")
-    # print(public_key_ht)
+    print("Checking Integration")
+    print("key 1")
+    print(node)
+    print("Key 2")
+    print(public_key_ht)
     if node == public_key_ht:
         return True
     else:
@@ -788,6 +794,12 @@ class SphincsC():
 
     # SETTERS / GETTERS
     # =================================================
+    def set_cf(self, val):
+        cf = val
+        # print(cf)
+        global len_x
+        len_x =  len_0 - cf * len_2
+        # print(len_x)
 
     def set_security(self, val):
         self._n = val
