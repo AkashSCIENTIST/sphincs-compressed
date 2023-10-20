@@ -39,12 +39,23 @@ from crypto.python import EccCore
 import base64
 from package.sphincsc import SphincsC
 
+
 sphincs = SphincsC()
-sphincs.set_n(32)
-sphincs.set_winternitz(4)
-sphincs.set_cf(2)
-# sphincs.set_hypertree_height(8)
-sphincs.set_a(8)
+sphincs.set_n(16)
+sphincs.set_h(63)
+sphincs.set_d(21)
+sphincs.set_k(19)
+sphincs.set_w(16)
+
+
+
+
+
+
+
+
+
+
 #from server1.server1_app import views
 #from crypto.python import EccApp
 
@@ -341,7 +352,7 @@ def Register():
                 else:
                     return validate(stat,False)
 if __name__=='__main__':
-    print(compare("Hello"))
+    print(compare("No one knows the reason for all this, but it is probably quantum. - Pyramids, Terry Pratchett (1989)"))
     # facerecog()
     # if(Register()==False):
     #     speak("You are not a valid user")
