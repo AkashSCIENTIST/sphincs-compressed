@@ -441,6 +441,7 @@ class SphincsC:
             digest = self.thash_fin(m, adrs_bin, bitmask, public_seed)
 
             if((digest[self._n-1] & mask) == 0):
+                # print("Digest", digest)
                 steps, csum = self.chain_lengths(digest)
                 if csum == self._WANTED_CHECKSUM:
                     break
@@ -686,7 +687,7 @@ class SphincsC:
                 vin += 1
                 bits += 8
             bits -= math.floor(math.log(w, 2))
-            basew.append((total >> bits) % w)
+            basew.append((total >> abs(bits)) % w)
             vout += 1
 
         return basew
