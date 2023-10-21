@@ -8,26 +8,22 @@ import math
 RANDOMIZE = True
 
 # Security parameter (in bytes)
-n = 32
-# n = 16
+n = 16
 
 # Winternitz parameter
-w = 16
+w = 128
 
 # Hypertree height
-# h = 12
-h = 8
+h = 66
 
 # Hypertree layers
-d = 3
-# d = 5
+d = 11
 
 # FORS trees numbers
-# k = 8
-k = 2 ** d
+k = 9
 
 # FORS trees height
-a = 4
+a = 15
 
 # Compression Factor
 cf = 1

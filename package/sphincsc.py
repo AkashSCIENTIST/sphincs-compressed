@@ -729,8 +729,8 @@ class SphincsC():
         len_2 = math.floor(math.log(len_1 * (w - 1), 2) / math.log(w, 2)) + 1
         len_0 = len_1 + len_2
         len_x = len_0 - cf*len_2
-        if len_x <= len_0 / 2:
-            len_x = math.ceil(len_0 / 2)
+        # if len_x <= len_0 / 2:
+        #     len_x = math.ceil(len_0 / 2)
 
         # XMSS Sub-Trees height
         h_prime = h // d
@@ -840,6 +840,7 @@ class SphincsC():
     # SETTERS / GETTERS
     # =================================================
     def set_cf(self, val):
+        global cf
         cf = val
         # print(cf)
         global len_x
@@ -857,9 +858,13 @@ class SphincsC():
         self._n = val
         n = val
         self.calculate_variables()
+        print("Debug n", n)
+        print("Debug _n", self._n)
 
     def get_security(self):
-        return self._n
+        global n
+        return n
+        # return self._n
 
     def set_winternitz(self, val):
         global w

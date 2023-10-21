@@ -9,25 +9,21 @@ RANDOMIZE = True
 
 # Security parameter (in bytes)
 n = 32
-# n = 16
 
 # Winternitz parameter
 w = 16
 
 # Hypertree height
-# h = 12
-h = 8
+h = 64
 
 # Hypertree layers
-d = 3
-# d = 5
+d = 16
 
 # FORS trees numbers
-# k = 8
-k = 2 ** d
+k = 34
 
 # FORS trees height
-a = 4
+a = 15
 
 # Compression Factor
 cf = 1
@@ -58,11 +54,12 @@ SPX_TREE_BYTES = ((SPX_TREE_BITS + 7) / 8)
 SPX_LEAF_BITS = h_prime
 SPX_LEAF_BYTES = ((SPX_LEAF_BITS + 7) / 8)
 SPX_FORS_MSG_BYTES = ((a * k + 7) / 8)
-SPX_DGST_BYTES = (int)(SPX_FORS_ZEROED_BYTES + SPX_FORS_MSG_BYTES + SPX_TREE_BYTES + SPX_LEAF_BYTES)
+SPX_DGST_BYTES = (int)(SPX_FORS_ZEROED_BYTES +
+                       SPX_FORS_MSG_BYTES + SPX_TREE_BYTES + SPX_LEAF_BYTES)
 
 
 WOTS_ZERO_BITS = 2
-SPX_OFFSER_COUNTER = 24 # 14 possible value
+SPX_OFFSER_COUNTER = 24  # 14 possible value
 WANTED_CHECKSUM = (len_1*(w-1))//2
 SPX_ADDR_BYTES = 32
 SPX_WOTS_BYTES = (len_1 * n)
