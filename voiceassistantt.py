@@ -321,8 +321,11 @@ def takeCommand():
             return "None"
         return statement
 
-speak("Loading your AI personal assistant G-One")
+
+# speak("Loading your AI personal assistant G-One")
 wishMe()
+speak("I'm G-One. your AI personal assistant ")
+speak("Speed One Tera Hertz; Memory One Zetta Byte")
 
 def Register():
     while True:
@@ -353,12 +356,9 @@ def Register():
                 else:
                     return validate(stat,False)
 if __name__=='__main__':
-    # print(compare("No one knows the reason for all this, but it is probably quantum. - Pyramids, Terry Pratchett (1989)"))
-    print("Main")
-    # speak("I am G One")
-    # speak("Speed One Tera Hertz; Memory One Zetta Byte")
+    print(compare("No one knows the reason for all this, but it is probably quantum. - Pyramids, Terry Pratchett (1989)"))
     
-    # facerecog()
+    facerecog()
     if(Register()==False):
         speak("You are not a valid user")
     else:
@@ -373,7 +373,7 @@ if __name__=='__main__':
             voiceDetails = {'command': statement,'time': str(datetime.datetime.now())}
             VoiceCommands= db.VoiceCommands
             result=VoiceCommands.insert_one(voiceDetails)
-            if "good bye" in statement or "ok bye" in statement or "stop" in statement:
+            if "good bye" in statement or "goodbye" in statement or "ok bye" in statement or "stop" in statement or "see you soon" in statement:
                 speak('your personal assistant G-one is shutting down,Good bye')
                 print('your personal assistant G-one is shutting down,Good bye')
                 break
