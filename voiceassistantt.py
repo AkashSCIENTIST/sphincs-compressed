@@ -275,6 +275,7 @@ def facerecog():
                 # print(base64.b64encode(img))
         cv2.imshow('webcam', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            return True
             break
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -328,37 +329,40 @@ speak("I'm G-One. your AI personal assistant ")
 speak("Speed One Tera Hertz; Memory One Zetta Byte")
 
 def Register():
-    while True:
-        speak("Tell me how can I help you now?")
-        statement = takeCommand().lower()
+    face_flag = facerecog()
+    while face_flag:
+        print("Say WakeUp word")
+        statement_start = takeCommand().lower()
+        if "proceed" in statement_start:
+            speak("Tell me how can I help you now?")
+            statement = takeCommand().lower()
 
-        if statement==0:
-            continue
-        if "register" in statement:
-            flag=False
-            while True:
-                speak("Tell me the Password")
-                stat=takeCommand().lower()
-                if(stat==0):
-                    continue
-                else:
-                    if(validate(stat,True)):
-                        flag=True
-                if(flag):
-                    return True
-                    break
-        else:
-            while True:
-                speak("Tell me the Password")
-                stat=takeCommand().lower()
-                if(stat==0):
-                    continue
-                else:
-                    return validate(stat,False)
+            if statement==0:
+                continue
+            if "register" in statement:
+                flag=False
+                while True:
+                    speak("Tell me the Password")
+                    stat=takeCommand().lower()
+                    if(stat==0):
+                        continue
+                    else:
+                        if(validate(stat,True)):
+                            flag=True
+                    if(flag):
+                        return True
+                        break
+            else:
+                while True:
+                    speak("Tell me the Password")
+                    stat=takeCommand().lower()
+                    if(stat==0):
+                        continue
+                    else:
+                        return validate(stat,False)
+
 if __name__=='__main__':
     print(compare("No one knows the reason for all this, but it is probably quantum. - Pyramids, Terry Pratchett (1989)"))
-    
-    facerecog()
     if(Register()==False):
         speak("You are not a valid user")
     else:
