@@ -5,6 +5,7 @@ from crypto.python import EccCore
 import random
 import numpy as np
 # from sibc.sidh import SIKE, default_parameters
+from pymongo import MongoClient
 from package.sphincs import Sphincs
 
 
@@ -22,7 +23,10 @@ a = 0
 b = 7
     
 # Connect to the test db 
-# db=client.server2
+client = MongoClient(
+    "mongodb+srv://Cluster73137:S3PNMwUmMaAQpzPI@cluster73137.l29srvj.mongodb.net/")
+# db = client.VoiceAssistant
+db=client.server2
 
 x1= 2010000000000017
 G1X1, G1Y1 = EccCore.applyDoubleAndAddMethod(G1[0], G1[1], x1, a, b, mod)
@@ -208,8 +212,8 @@ def ComputeAngleBetweenMedians(G3X1,G3Y1,to_register):
     M2=np.array(M2)
     A1=list(EccCore.applyDoubleAndAddMethod(G1[0], G1[1], a1, a, b, mod))
     B1=M2+(a1*G1Y1)
-    # Points=db.Points
-    Points = []
+    Points=db.Points
+    # Points = []
     A1[0]=str(A1[0])
     A1[1]=str(A1[1])
     B1[0]=str(B1[0])
@@ -218,14 +222,15 @@ def ComputeAngleBetweenMedians(G3X1,G3Y1,to_register):
     var={'A1-x':A1[0],'A1-y':A1[1],'B1-x':B1[0],'B1-y':B1[1]}
     if(to_register):
         result = Points.insert_one(var)
+        # result = Points + [var]
         addAngleinServer((angle1+angle2+angle3)//3)
     else:
         return checkwithAngle((angle1+angle2+angle3)//3)
 
     
 def addAngleinServer(angle_values):
-    # Angle= db.Angle
-    Angle = []
+    Angle= db.Angle
+    # Angle = []
     angle_details = {
         'Angle-in-radians': math.radians(angle_values),
         'Angle-in-values': (angle_values)
@@ -233,13 +238,14 @@ def addAngleinServer(angle_values):
 
     # Use the insert method
     result = Angle.insert_one(angle_details)
+    # result = Angle + [angle_details]
 
     # Query for the inserted document.
     # Queryresult = employee.find_one({'Age':})
     # pprint(Queryresult)
 
 def checkwithAngle(angle_values):
-    # Angle=db.Angle
-    Angle = []
+    Angle=db.Angle
+    # Angle = []
     Queryresult=Angle.find_one({'Angle-in-values':angle_values})
     return (Queryresult!=None)    

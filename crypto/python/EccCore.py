@@ -3,44 +3,66 @@ dump = False
 #---------------------------------------------
 
 def findModularInverse(a, mod):
+	return pow(a, -2, mod)
 			
-	while(a < 0):
-		a = a + mod
+	# while(a < 0):
+	# 	a = a + mod
 	
-	#a = a % mod
+	# #a = a % mod
 	
-	x1 = 1; x2 = 0; x3 = mod
-	y1 = 0; y2 = 1; y3 = a
+	# x1 = 1; x2 = 0; x3 = mod
+	# y1 = 0; y2 = 1; y3 = a
 	
-	q = int(x3 / y3)
-	t1 = x1 - q*y1
-	t2 = x2 - q*y2
-	t3 = x3 - (q*y3)
+	# q = int(x3 / y3)
+	# t1 = x1 - q*y1
+	# t2 = x2 - q*y2
+	# t3 = x3 - (q*y3)
 	
-	if dump == True:
-		print("q\tx1\tx2\tx3\ty1\ty2\ty3\tt1\tt2\tt3")
-		print("----------------------------------------------------------------------------")
-		print(q,"\t",x1,"\t",x2,"\t",x3,"\t",y1,"\t",y2,"\t",y3,"\t",t1,"\t",t2,"\t",t3)
+	# if dump == True:
+	# 	print("q\tx1\tx2\tx3\ty1\ty2\ty3\tt1\tt2\tt3")
+	# 	print("----------------------------------------------------------------------------")
+	# 	print(q,"\t",x1,"\t",x2,"\t",x3,"\t",y1,"\t",y2,"\t",y3,"\t",t1,"\t",t2,"\t",t3)
 	
-	while(y3 != 1):
-		x1 = y1; x2 = y2; x3 = y3
+	# while(y3 != 1):
+	# 	x1 = y1; x2 = y2; x3 = y3
 		
-		y1 = t1; y2 = t2; y3 = t3
+	# 	y1 = t1; y2 = t2; y3 = t3
 		
-		q = int(x3 / y3)
-		t1 = x1 - q*y1
-		t2 = x2 - q*y2
-		t3 = x3 - (q*y3)
+	# 	q = int(x3 / y3)
+	# 	t1 = x1 - q*y1
+	# 	t2 = x2 - q*y2
+	# 	t3 = x3 - (q*y3)
 		
-		if dump == True:
-			print(q,"\t",x1,"\t",x2,"\t",x3,"\t",y1,"\t",y2,"\t",y3,"\t",t1,"\t",t2,"\t",t3)
-			print("----------------------------------------------------------------------------")
-			print("")
+	# 	if dump == True:
+	# 		print(q,"\t",x1,"\t",x2,"\t",x3,"\t",y1,"\t",y2,"\t",y3,"\t",t1,"\t",t2,"\t",t3)
+	# 		print("----------------------------------------------------------------------------")
+	# 		print("")
 	
-	while(y2 < 0):
-		y2 = y2 + mod
+	# while(y2 < 0):
+	# 	y2 = y2 + mod
 	
-	return y2
+	# return y2
+
+
+def mod_inverse(x, m):
+    if m == 1:
+        return 0
+
+    a, b = x % m, m
+    x1, x2 = 1, 0
+
+    while a > 1:
+        q = a // m
+        m, a = a, m
+        x1, x2 = x2, x1 - q * x2
+
+    x1 = x1 % m
+
+    if x1 < 0:
+        x1 += m
+
+    return x1
+
 
 def pointAddition(x1, y1, x2, y2, a, b, mod):
 	
