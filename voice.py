@@ -343,7 +343,9 @@ def Register():
         print("Say WakeUp word 'Proceed' to continue ...")
         statement_start = takeCommand().lower()
         if "proceed" in statement_start:
-            speak("Tell me how can I help you now?")
+            speak("Say hello to login")
+            speak("Say register to sign up")
+            # speak("Tell me how can I help you now?")
             statement = takeCommand().lower()
 
             if statement == 0:
