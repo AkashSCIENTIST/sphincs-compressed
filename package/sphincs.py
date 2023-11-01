@@ -6,13 +6,15 @@ import os
 import math
 import random
 import hashlib
-
+import skein
 from package.adrs import ADRS
+
+_hash_fun = hashlib.sha512
 
 
 # TWEAKABLES & UTILS
 def hash(seed, adrs: ADRS, value, digest_size):
-    m = hashlib.sha256()
+    m = _hash_fun()
 
     m.update(seed)
     m.update(adrs.to_bin())
@@ -29,7 +31,7 @@ def prf(secret_seed, adrs, digest_size):
 
 
 def hash_msg(r, public_seed, public_root, value, digest_size):
-    m = hashlib.sha256()
+    m = _hash_fun()
 
     m.update(r)
     m.update(public_seed)
@@ -41,7 +43,7 @@ def hash_msg(r, public_seed, public_root, value, digest_size):
     i = 0
     while len(hashed) < digest_size:
         i += 1
-        m = hashlib.sha256()
+        m = _hash_fun()
 
         m.update(r)
         m.update(public_seed)
@@ -98,7 +100,7 @@ class Sphincs():
         self._d = 8
         self._k = 10
         self._a = 15
-
+        self._hash_fun = hashlib.sha512
         self._len_1 = math.ceil(8 * self._n / math.log(self._w, 2))
         self._len_2 = math.floor(math.log(self._len_1 * (self._w - 1), 2) / math.log(self._w, 2)) + 1
         self._len_0 = self._len_1 + self._len_2
@@ -111,6 +113,17 @@ class Sphincs():
         self._len_0 = self._len_1 + self._len_2
         self._h_prime = self._h // self._d
         self._t = 2 ** self._a
+
+    def set_hash_fun(self, key=0):
+        global _hash_fun
+        if key == 0:
+            _hash_fun = hashlib.sha512
+        elif key == 1:
+            _hash_fun = hashlib.blake2b
+        elif key == 2:
+            _hash_fun = skein.skein512
+        else:
+            _hash_fun = hashlib.sha256
 
     # CLASS IMPLEMENTATION OF SPHINCS
     # =================================================

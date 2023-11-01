@@ -3,6 +3,7 @@ import os
 import math
 import hashlib
 import random
+import skein
 
 
 class SphincsC:
@@ -15,6 +16,7 @@ class SphincsC:
         self._k = 10
         self._a = 15
         self._cf = 1
+        self._hash_fun = hashlib.sha512
         self._len_1 = math.ceil(8 * self._n / math.log(self._w, 2))
         self._len_2 = math.floor(
             math.log(self._len_1 * (self._w - 1), 2) / math.log(self._w, 2)) + 1
@@ -63,8 +65,8 @@ class SphincsC:
     # n = 16
     def set_n(self, val):
         self._n = val
-        print("Value of n changed")
-        print(self._n)
+        # print("Value of n changed")
+        # print(self._n)
         self.recalculate_variables()
 
     # Winternitz parameter
@@ -73,8 +75,8 @@ class SphincsC:
     def set_w(self, val):
         # global w
         self._w = val
-        print("Value of w changed")
-        print(self._w)
+        # print("Value of w changed")
+        # print(self._w)
         self.recalculate_variables()
 
     # Hypertree height
@@ -83,8 +85,8 @@ class SphincsC:
     def set_h(self, val):
         # global h
         self._h = val
-        print("Value of h changed")
-        print(self._h)
+        # print("Value of h changed")
+        # print(self._h)
         self.recalculate_variables()
 
     # Hypertree layers
@@ -93,8 +95,8 @@ class SphincsC:
     def set_d(self, val):
         # global d
         self._d = val
-        print("Value of d changed")
-        print(self._d)
+        # print("Value of d changed")
+        # print(self._d)
         self.recalculate_variables()
 
     # FORS trees numbers
@@ -103,8 +105,8 @@ class SphincsC:
     def set_k(self, val):
         # global k
         self._k = val
-        print("Value of  changed")
-        print(self._k)
+        # print("Value of  changed")
+        # print(self._k)
         self.recalculate_variables()
 
     # FORS trees height
@@ -113,8 +115,8 @@ class SphincsC:
     def set_a(self, val):
         # global a
         self._a = val
-        print("Value of a changed")
-        print(self._a)
+        # print("Value of a changed")
+        # print(self._a)
         self.recalculate_variables()
 
     # Compression Factor
@@ -123,8 +125,8 @@ class SphincsC:
     def set_cf(self, val):
         # global cf
         self._cf = val
-        print("Value of cf changed")
-        print(self._cf)
+        # print("Value of cf changed")
+        # print(self._cf)
         self.recalculate_variables()
 
     def generate_key_pair(self):
@@ -203,7 +205,7 @@ class SphincsC:
         return self.spx_verify(m, sig_tab, pk_tab)
 
     def recalculate_variables(self):
-        print("Recalculation called")
+        # print("Recalculation called")
         self._len_1 = math.ceil(8 * self._n / math.log(self._w, 2))
         self._len_2 = math.floor(
             math.log(self._len_1 * (self._w - 1), 2) / math.log(self._w, 2)) + 1
@@ -506,12 +508,20 @@ class SphincsC:
                 array.append((val >> j) % 2)
         print(array)
 
+    def set_hash_fun(self, key=0):
+        if key == 0:
+            self._hash_fun = hashlib.sha512
+        elif key == 1:
+            self._hash_fun = hashlib.blake2b
+        elif key == 2:
+            self._hash_fun = skein.skein512
+        else:
+            self._hash_fun = hashlib.sha256
+
     def hash(self, seed, adrs: ADRS, value, counter=None, digest_size=None):
         if(digest_size == None):
             digest_size = self._n
-        m = hashlib.sha512()
-        # m = hashlib.blake2b()
-        # m = skein.skein512()
+        m = self._hash_fun()
 
         m.update(seed)
         if type(adrs) == ADRS:
@@ -555,7 +565,7 @@ class SphincsC:
     def hash_msgg(self, r, public_seed, public_root, value, digest_size=None):
         if(digest_size == None):
             digest_size = self._n
-        m = hashlib.sha256()
+        m = self._hash_fun()
 
         m.update(r)
         m.update(public_seed)
@@ -567,7 +577,7 @@ class SphincsC:
         i = 0
         while len(hashed) < digest_size:
             i += 1
-            m = hashlib.sha256()
+            m = self._hash_fun()
 
             m.update(r)
             m.update(public_seed)
@@ -584,7 +594,7 @@ class SphincsC:
     def hash_with_counter(self, r, public_seed, public_root, value, counter_bytes, digest_size=None):
         if(digest_size == None):
             digest_size = self._n
-        m = hashlib.sha256()
+        m = self._hash_fun()
         m.update(r)
         m.update(public_seed)
         m.update(public_root)
@@ -595,7 +605,7 @@ class SphincsC:
         i = 0
         while len(hashed) < digest_size:
             i += 1
-            m = hashlib.sha256()
+            m = self._hash_fun()
 
             m.update(r)
             m.update(public_seed)
