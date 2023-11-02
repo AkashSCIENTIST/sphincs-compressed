@@ -1,5 +1,16 @@
 click
+opencv-python
 matplotlib
 networkx
 numpy
 progress
+numpy
+sibc
+SpeechRecognition
+pyttsx3
+wikipedia
+ecapture
+wolframalpha
+bson
+face-recognition
+pymongo
