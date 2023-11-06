@@ -46,7 +46,7 @@ sphincs.set_d(21)
 sphincs.set_k(19)
 sphincs.set_w(16)
 sphincs.set_a(15)
-sphincs.set_n(4)
+sphincs.set_cf(4)
 
 
 #from server1.server1_app import views

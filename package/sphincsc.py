@@ -365,7 +365,7 @@ class SphincsC:
     # Input: secret seed SK.seed, address ADRS
     # Output: WOTS+ private key sk
 
-    def wots_sk_gen(self, secret_seed, adrs: ADRS):  # Not necessary
+    def wots_sk_gen(self, secret_seed, adrs: ADRS):
         sk = []
         for i in range(0, self._len_x):
             adrs.set_chain_address(i)
