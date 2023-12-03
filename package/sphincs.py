@@ -122,6 +122,8 @@ class Sphincs():
             _hash_fun = hashlib.blake2b
         elif key == 2:
             _hash_fun = skein.skein512
+        elif key == 3:
+            _hash_fun = skein.skein1024
         else:
             _hash_fun = hashlib.sha256
 

@@ -515,6 +515,8 @@ class SphincsC:
             self._hash_fun = hashlib.blake2b
         elif key == 2:
             self._hash_fun = skein.skein512
+        elif key == 3:
+            self._hash_fun = skein.skein1024
         else:
             self._hash_fun = hashlib.sha256
 
